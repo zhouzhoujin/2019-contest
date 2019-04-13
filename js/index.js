@@ -52,9 +52,9 @@ var divNum=12;//跨越12个到下一行
 
 //一开始选择关卡点击切换场景
 $("#choicePass").click(function(){
-    $("#init").addClass("hide");
+    $("#init").addClass("hide");//隐藏
     $("#box").removeClass("hide");
-    customs = $('input:radio:checked').val();
+    customs = $('input:radio:checked').val();//等于选的关卡
     winCondition = needList[customs];
     initPosition = position[customs];
     map = $("#box div");
@@ -63,7 +63,7 @@ $("#choicePass").click(function(){
 //下一关
 function nextCustoms(){
     $(".next").click(function(){//跳转下一关
-        $("#pass").addClass("hide");
+        $("#pass").addClass("hide");//隐藏
         $("#box").removeClass("hide");
     });
 }
@@ -78,11 +78,10 @@ function createBox(){
 //初始化地图
 function init(){
     map.each(function(index){
-        console.log(index)
-        map.eq(index).removeClass();
+        map.eq(index).removeClass();//遍历移除所有样式
     });
     map.each(function(index){
-        if(buildMap[customs][index] != 0){
+        if(buildMap[customs][index] != 0){//如果不为0则相应加上样式
             map.eq(index).addClass("img"+buildMap[customs][index])
         }
     })
@@ -93,17 +92,16 @@ $(document).keydown(function(e){
     var key = e.keyCode;
     console.log(key)
     switch(key){
-        //向上移动按w；
-        case 87:
+        case 87: //向上移动按w；
             move(-divNum);
         break;
-        case 83:
+        case 83: //下
             move(divNum);
         break;
-        case 65:
+        case 65: //左
             move(-1);
         break;
-        case 68:
+        case 68: //右
             move(1);
         break;
     }
@@ -111,17 +109,17 @@ $(document).keydown(function(e){
 })
 //移动判断
 function move(distance){
-    //0代表不可抵达区域，1代表金币
-        //2代表路径，3代表墙，4代表箱子
+    //position代表位置，img1代表金币
+    //img2代表路径，img3代表墙，img4代表箱子
     var nowPosition = map.eq(initPosition);//现在的位置
     var nextPosition = map.eq(initPosition+distance);//下一时刻的位置
-    var nextBoxPosition = map.eq(initPosition + 2*distance )
-    if(!nextPosition.hasClass('img4') && (nextPosition.hasClass('img2') ||nextPosition.hasClass('img1'))){
+    var nextBoxPosition = map.eq(initPosition + 2*distance )//下一时刻箱子的位置
+    if(!nextPosition.hasClass('img4') && (nextPosition.hasClass('img2') ||nextPosition.hasClass('img1'))){//移动
         nowPosition.removeClass('position');
         nextPosition.addClass('position');
         initPosition += distance;
     }else if(nextPosition.hasClass('img4') && (!nextBoxPosition.hasClass('img4')) && (nextBoxPosition.hasClass('img1') || nextBoxPosition.hasClass('img2'))){
-        nowPosition.removeClass('position');
+        nowPosition.removeClass('position');//推箱子
         nextPosition.removeClass('img4');
         nextBoxPosition.addClass('img4');
         nextPosition.addClass('position').addClass('img2');
@@ -131,8 +129,8 @@ function move(distance){
 //通关条件
 function pass(){
     if($(".img1.img4").length == winCondition){
-        if(customs<buildMap.length-1){
-            $("#box").addClass("hide");
+        if(customs<buildMap.length-1){//当前关卡与地图数比较
+            $("#box").addClass("hide");//隐藏
             $("#pass").removeClass("hide");
             nextCustoms();
             customs++;//关卡+1
